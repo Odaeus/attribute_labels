@@ -4,6 +4,9 @@ Attribute Labels
 Attribute Labels does what it says on the tin. You can specify text for
 each attribute that will appear on form labels and validation messages.
 
+If validates_presence_of is set for an attribute an asterisk will be
+suffixed to its form label.
+
 
 Example
 =======
@@ -12,9 +15,19 @@ class Vehicle < ActiveRecord::Base
   label :wheels => 'Number of wheels',
         :man_auto => 'Manual or automatic?',
         :abs => 'ABS'
+
+  validates_presence_of :wheels
 end
 
 Where AR would normally give you: 'Wheels', 'Man auto', 'Abs'
+
+<% form_for(@vehicle) do |f| %>
+  <%= f.label :wheels %>
+  <%= f.text_field :wheels %>
+<% end %>
+
+Will produce:
+  Number of wheels*  ______________
 
 
 Copyright (c) 2008 Andrew France, released under the MIT license.
