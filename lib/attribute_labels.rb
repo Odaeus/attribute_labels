@@ -8,6 +8,10 @@ module AttributeLabels
           alias_method_chain :human_attribute_name, :labels
           alias_method_chain :validates_presence_of, :labels
         end
+
+        cattr_accessor :labels
+        self.labels = {}
+
         cattr_accessor :required_attributes
         self.required_attributes = []
       end
@@ -24,11 +28,6 @@ module AttributeLabels
         labels.each do |attr, label|
           self.labels[attr.to_s] = label
         end
-      end
-
-      def init_labels
-        cattr_accessor :labels
-        self.labels = {}
       end
 
       def human_attribute_name_with_labels(name)
