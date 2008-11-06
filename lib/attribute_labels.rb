@@ -3,6 +3,11 @@ module AttributeLabels
   module ActiveRecordLabels
     def self.included(base)
       base.extend ClassMethods
+      base.class_eval do
+        class << self
+          alias_method_chain :human_attribute_name, :labels
+        end
+      end
     end
 
     module ClassMethods
@@ -23,9 +28,9 @@ module AttributeLabels
         self.labels = {}
       end
 
-      def human_attribute_name(name)
-        str_name = name.to_s
-        self.labels[name] || name.humanize
+      def human_attribute_name_with_labels(name)
+        name = name.to_s
+        self.labels[name] || human_attribute_name_without_labels(name)
       end
     end
   end
