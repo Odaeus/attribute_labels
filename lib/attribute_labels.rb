@@ -47,26 +47,25 @@ module AttributeLabels
   end
 
   module ActionViewLabels
-    module FormHelper
-      def label(method, text = nil, options = {})
-        if text == nil && options[:object].respond_to?(:labels)
-          text = options[:object].labels[method.to_s]
-        end
-        InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag(text, options)
-      end
-    end
-    module FormBuilderLabels
+    module InstanceTagLabels
       def self.included(base)
         base.class_eval do
-          alias_method_chain :label, :attribute_labels
+          alias_method_chain :to_label_tag, :labels
         end
       end
 
-      def label_with_attribute_labels(method, text = nil, options = {})
-        if text == nil && @object.respond_to?(:labels)
-          text = @object.labels[method.to_s]
+      def to_label_tag_with_labels(text = nil, options = {})
+        if text.nil? && object.respond_to?(:labels)
+          text = object.labels[method_name]
         end
-        label_without_attribute_labels(method, text, options)
+
+        text = text || method_name.humanize
+
+        # Add an asterisk if it's a required attribute
+        if text && object.required_attributes.include?(method_name)
+          text << '*'
+        end
+        to_label_tag_without_labels(text, options)
       end
     end
   end
