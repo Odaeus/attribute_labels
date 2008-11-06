@@ -37,9 +37,10 @@ module AttributeLabels
       end
 
       def validates_presence_of_with_labels(*attr_names)
-        # Can't cope with :if parameters
-        unless attr_names.is_a?(Array) && attr_names.last.is_a?(Hash) && attr_names.last[:if]
-          self.required_attributes += attr_names
+        # Can't cope with :if or :unless parameters
+        unless attr_names.is_a?(Array) && attr_names.last.is_a?(Hash)
+            && (attr_names.last[:if] || attr_names.last[:unless])
+          self.required_attributes += attr_names.map {|name| name.to_s }
         end
         validates_presence_of_without_labels(attr_names)
       end
