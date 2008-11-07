@@ -62,7 +62,8 @@ module AttributeLabels
         text = text || method_name.humanize
 
         # Add an asterisk if it's a required attribute
-        if text && object.required_attributes.include?(method_name)
+        if text && object.respond_to?(:required_attributes) &&
+            object.required_attributes.include?(method_name)
           text << '*'
         end
         to_label_tag_without_labels(text, options)
