@@ -17,6 +17,10 @@ module AttributeLabels
       end
     end
 
+    def label_for(attr_name)
+      self.class.label_for(attr_name)
+    end
+
     module ClassMethods
       def label(labels)
         unless labels.is_a?(Hash)
@@ -28,6 +32,11 @@ module AttributeLabels
         labels.each do |attr, label|
           self.labels[attr.to_s] = label
         end
+      end
+
+      def label_for(attr_name)
+        attr_name = attr_name.to_s
+        labels[attr_name] || attr_name.humanize
       end
 
       def human_attribute_name_with_labels(name)
