@@ -50,7 +50,7 @@ module AttributeLabels
             (attr_names.last[:if] || attr_names.last[:unless])
           self.required_attributes += attr_names.map {|name| name.to_s }
         end
-        validates_presence_of_without_labels(attr_names)
+        validates_presence_of_without_labels(*attr_names)
       end
     end
   end
