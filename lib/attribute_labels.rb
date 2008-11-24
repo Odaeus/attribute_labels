@@ -7,13 +7,15 @@ module AttributeLabels
         class << self
           alias_method_chain :human_attribute_name, :labels
           alias_method_chain :validates_presence_of, :labels
+
+          define_method :labels do
+            @labels ||= {}
+          end
+
+          define_method :required_attributes do
+            @required_attributes ||= {}
+          end
         end
-
-        cattr_accessor :labels
-        self.labels = {}
-
-        cattr_accessor :required_attributes
-        self.required_attributes = []
       end
     end
 
@@ -26,9 +28,7 @@ module AttributeLabels
         unless labels.is_a?(Hash)
           raise 'Was expecting a hash of attribute -> label pairs.'
         end
-        unless respond_to?(:labels)
-          init_labels
-        end
+
         labels.each do |attr, label|
           self.labels[attr.to_s] = label
         end
