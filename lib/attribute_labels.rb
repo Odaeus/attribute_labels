@@ -13,7 +13,7 @@ module AttributeLabels
           end
 
           define_method :required_attributes do
-            @required_attributes ||= {}
+            @required_attributes ||= []
           end
         end
       end
