@@ -64,15 +64,15 @@ module AttributeLabels
       end
 
       def to_label_tag_with_labels(text = nil, options = {})
-        if text.nil? && object.respond_to?(:labels)
-          text = object.labels[method_name]
+        if text.nil? && object.class.respond_to?(:labels)
+          text = object.class.labels[method_name]
         end
 
         text = text || method_name.humanize
 
         # Add an asterisk if it's a required attribute
-        if text && object.respond_to?(:required_attributes) &&
-            object.required_attributes.include?(method_name)
+        if text && object.class.respond_to?(:required_attributes) &&
+            object.class.required_attributes.include?(method_name)
           text << '*'
         end
         to_label_tag_without_labels(text, options)
